@@ -39,7 +39,7 @@ include '../includes/header.php';
         <br><br>
         <button type="submit">Add</button>
         <br><br>
-        <a href="students.php" class="formbutton">Go Back</a>
+        <a href="students.php" class="mini-tab">Go Back</a>
     </fieldset>
 </form>
 </div>

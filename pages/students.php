@@ -68,10 +68,12 @@ include '../includes/header.php';
         <br><br>
         <button type="submit">Add student</button>
         <br><br>
+        <div class="mini-tab">
         <nav>
             <a href="student_info.php">Add Student Information</a> |
             <a href="next_of_kin.php">Add Next-of-Kin</a>
         </nav> 
+                </div>
     </fieldset>
 </form>   
 </div>

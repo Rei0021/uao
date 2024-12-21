@@ -45,14 +45,54 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="assets/styles.css"> <!-- Link to the updated CSS -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .error {
+            color: red;
+        }
+        button {
+            background-color: #f1485b; /* Primary color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: white;
+            color: #f1485b;
+        }
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
-    <?php if (isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
-    <form action="" method="post">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit" name="login">Login</button>
-    </form>
+    <div class="login-container">
+        <h2>Login</h2>
+        <?php if (isset($error)) { echo "<p class='error'>$error</p>"; } ?>
+        <form action="" method="post">
+            <input type="text" name="username" placeholder="Username" required> <br> <br>
+            <input type="password" name="password" placeholder="Password" required> <br> <br>
+            <div>
+                <input type="checkbox" name="remember"> Remember Me
+            </div>
+            <button type="submit" name="login">Login</button>
+        </form>
+    </div>
 </body>
 </html>

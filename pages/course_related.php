@@ -41,6 +41,6 @@ if ($type === 'crs') {
 }
 ?>
 
-<?php include '../includes/footer.php'; ?>
+
 </body>
 </html>
