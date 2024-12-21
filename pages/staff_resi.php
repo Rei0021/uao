@@ -1,5 +1,5 @@
 <h3>Manage Residence Staff</h3>
-
+<div class="form-container">
 <h4>Staff Form</h4>
 
 <!-- Add Staff Form -->
@@ -33,6 +33,7 @@
         <button type="submit">Add Staff</button>
     </fieldset>
 </form>
+</div>
 
 <?php
 // Add Staff Logic

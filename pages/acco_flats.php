@@ -9,7 +9,7 @@
 <body>
 
 <h3>Manage Student Flats</h3>
-
+<div class="form-container">
 <h4>Flat Form</h4>
 
 <!-- Add Flat Form -->
@@ -30,6 +30,7 @@
         <a href="acco_flats_inspect.php">Add Inspection</a>
     </fieldset>
 </form>
+</div>
 
 <?php
 // Add Flat Logic

@@ -21,13 +21,15 @@ include '../includes/header.php';
 </head>
 <body>
 
-<h2 class="ms">Manage Staffs</h2>
+<h2 class="mc-cont">Manage Staffs</h2>
 
 <!-- Tabs or mini nav-->
-<nav class="mini-tab">
+<div class="mini-tab">
+<nav>
     <a href="?type=resi">Residence Staff</a> |
     <a href="?type=advsr">Advisers</a>
 </nav>
+</div>
 
 <?php
 $type = $_GET['type'] ?? 'resi'; // Default to residence staff
@@ -37,6 +39,8 @@ if ($type === 'resi') {
     include 'staff_advsr.php';
 }
 ?>
+
+
 
 <?php include '../includes/footer.php'; ?>
 </body>

@@ -22,13 +22,15 @@ include '../includes/header.php';
 <body>
 
 <h2 class="mc-cont">Manage Courses</h2>
-<div class="mg-navbar">
+
 <!-- Tabs or mini nav-->
- <nav>
+<div class="mini-tab">
+<nav>
     <a href="?type=crs">Course</a> |
     <a href="?type=nstrctr">Instructor</a>
- </nav>
+</nav>
 </div>
+
 
 <?php
 $type = $_GET['type'] ?? 'crs'; // Default to courses

@@ -9,7 +9,7 @@
 <body>
 
 <h3>Manage Invoices</h3>
-
+<div class="form-container">
 <h4>Invoice Form</h4>
 
 <!-- Add Invoice Form -->
@@ -46,6 +46,7 @@
         <button type="submit">Add Invoice</button>
     </fieldset>
 </form>
+</div>
 
 <?php
 // Add Invoice Logic

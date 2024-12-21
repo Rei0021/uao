@@ -1,5 +1,5 @@
 <h3>Manage Halls of Residence</h3>
-
+<div class="form-container">
 <h4>Hall Form</h4>
 
 <!-- Add Hall Form -->
@@ -33,6 +33,7 @@
         <button type="submit">Add Hall</button>
     </fieldset>  
 </form>
+            </div>
 
 <?php
 // Add Hall Logic

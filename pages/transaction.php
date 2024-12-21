@@ -21,13 +21,15 @@ include '../includes/header.php';
 </head>
 <body>
 
-<h2>Manage Transaction</h2>
+<h2 class="mc-cont">Manage Transaction</h2>
 
 <!-- Tabs or mini nav-->
+<div class="mini-tab">
 <nav>
     <a href="?type=lease">Lease</a> |
     <a href="?type=invoice">Invoice</a>
 </nav>
+</div>
 
 <?php
 $type = $_GET['type'] ?? 'lease'; // Default to leases

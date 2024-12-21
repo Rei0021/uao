@@ -22,7 +22,7 @@ include '../includes/header.php';
 <body>
 
 <h2>Manage Rooms</h2>
-
+<div class="form-container">
 <h3>Room Form</h3>
 
 <!-- Add Room Form -->
@@ -74,6 +74,7 @@ include '../includes/header.php';
         <button type="submit">Add Room</button>        
     </fieldset>
 </form>
+        </div>
 
 <?php
 // Add Room Logic

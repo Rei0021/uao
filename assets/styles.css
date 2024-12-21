@@ -2,11 +2,13 @@ body {
     margin: 1px;
 }
 
-h3 {
+h3, h2, h4 {
     margin: 0;
     padding: 10px 20px;
     color: white; 
     font-weight: bold;
+    text-align: center;
+    color: black;
 }
 
 header {
@@ -204,11 +206,39 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: #007bff;
+    color: #ffffff;
     font-size: 14px;
     margin: 0 5px;
 }
 
 nav a:hover {
     color: #f1485b;
+}
+
+.mini-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #ffffff;
+}
+
+.mini-tab nav {
+    background-color: #f1485b;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.mini-tab nav a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.mini-tabr nav a:hover {
+    text-decoration: none;
+    color: #212f3c;
+}
+.ms {
+    text-align: center;
 }

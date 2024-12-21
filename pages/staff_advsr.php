@@ -13,7 +13,7 @@ include '../includes/db_connect.php';
 <body>
 
 <h3>Manage Advisers</h3>
-
+<div class="form-container">
 <h4>Adviser Form</h4>
 
 <!-- Add Adviser Form -->
@@ -41,6 +41,7 @@ include '../includes/db_connect.php';
         <button type="submit">Add Adviser</button>
     </fieldset>
 </form>
+</div>
 
 <?php
 // Add Adviser Logic

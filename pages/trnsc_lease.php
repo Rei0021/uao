@@ -9,7 +9,7 @@
 <body>
 
 <h3>Manage Leases</h3>
-
+<div class="form-container">
 <h4>Lease Form</h4>
 
 <!-- Add Lease Form -->
@@ -34,6 +34,7 @@
         <button type="submit">Add Lease</button>
     </fieldset>
 </form>
+</div>
 
 <?php
 // Add Lease Logic

@@ -24,7 +24,7 @@ include '../includes/header.php';
 <h2 class="mc-cont">Manage Accommodation</h2>
 
 <!-- Tabs or mini nav-->
-<div class="mg-navbar">
+<div class="mini-tab">
 <nav>
     <a href="?type=hall">Halls of Residence</a> |
     <a href="?type=flat">Student Flats</a>
