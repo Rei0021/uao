@@ -1,11 +1,128 @@
+<style>
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f1485b;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+
+    h3 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    form fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    form legend {
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #555;
+        text-align: left;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+        text-align: left;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="date"],
+    form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    form button {
+        width: 100%;
+        padding: 10px;
+        background-color: #f1485b;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+        color: #f1485b;
+        background-color: white;
+      
+    }
+
+    nav {
+        margin-top: 20px;
+    }
+
+    nav a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 14px;
+        margin: 0 5px;
+        
+    }
+
+    nav a:hover {
+        color: #f1485b;
+    }
+
+    .title-cont1, .title-cont2 {
+        text-align: center;
+    }
+</style>
+
+
 <?php
     include '../includes/db_connect.php';
     include '../includes/header.php';
 ?>
 
-<h2>Manage Students</h2>
+<h2 class="title-cont1">Manage Students</h2>
 
-<h3>Student Form</h3>
+<div class="form-container">
+ <h3>Student Form</h3>
 
 <!-- Form to Add New Student -->
 <form action="" method="post">
@@ -72,7 +189,9 @@
             <a href="next_of_kin.php">Add Next-of-Kin</a>
         </nav> 
     </fieldset>
-</form>
+</form>   
+</div>
+
 
 <?php
 // Add Student Logic
@@ -124,7 +243,7 @@
 
 <br><hr>
 
-<h4>Student List</h4>
+<h4 class="title-cont2">Student List</h4>
 
 <table border="1">
     <tr>
