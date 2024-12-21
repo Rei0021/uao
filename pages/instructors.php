@@ -1,3 +1,7 @@
+<?php
+include '../includes/db_connect.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,44 +16,65 @@
 <div class="form-container">
 <h4>Instructor Form</h4>
 
-<form action="" method="post">
-    <fieldset>
-        <legend>Add Instructor</legend>
-        <label for="name">Full Name:</label>
-        <input type="text" name="name" placeholder="Enter Name" required>
-        <br><br>
-        <label for="phone_no">Phone Number:</label>
-        <input type="text" name="phone_no" placeholder="Enter Contact Number" required>
-        <br><br>
-        <label for="email">Email:</label>
-        <input type="email" name="email" placeholder="Enter Email" required>
-        <br><br>
-        <label for="instructor_room">Instructor Room:</label>
-        <input type="text" name="instructor_room" placeholder="Enter Room Number" required>
-        <br><br>
-        <button type="submit">Add Instructor</button>
-    </fieldset>
-</form>
-</div>
-
 <?php
-// Add Instructor Logic
+// Check if we need to edit an instructor
+if (isset($_GET['edit'])) {
+    $instructor_id = $_GET['edit'];
+    $sql = "SELECT * FROM instructors WHERE instructor_id = '$instructor_id'";
+    $result = $conn->query($sql);
+    $instructor = $result->fetch_assoc();
+} 
+
+// Handle form submission for adding or editing instructor info
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $phone_no = $_POST['phone_no'];
     $email = $_POST['email'];
     $instructor_room = $_POST['instructor_room'];
 
-    $sql = "INSERT INTO instructors (name, phone_no, email, instructor_room)
-            VALUES ('$name', '$phone_no', '$email', '$instructor_room')";
-    
+    if (isset($_GET['edit'])) {
+        // If we are editing an existing instructor, update the info
+        $instructor_id = $_GET['edit'];
+        $sql = "UPDATE instructors SET name='$name', phone_no='$phone_no', 
+                email='$email', instructor_room='$instructor_room' 
+                WHERE instructor_id='$instructor_id'";
+    } else {
+        // Otherwise, add a new instructor
+        $sql = "INSERT INTO instructors (name, phone_no, email, instructor_room)
+                VALUES ('$name', '$phone_no', '$email', '$instructor_room')";
+    }
+
     if ($conn->query($sql) === TRUE) {
-        echo "Instructor added successfully.";
+        // Redirect after successful add or edit
+        header("Location: course_related.php?type=nstrctr");
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
+?>
 
+<!-- Form to Add/Edit Instructor -->
+<form action="" method="post">
+    <fieldset>
+        <legend><?php echo isset($_GET['edit']) ? "Edit" : "Add"; ?> Instructor</legend>
+        <label for="name">Full Name:</label>
+        <input type="text" name="name" placeholder="Enter Name" value="<?php echo isset($instructor['name']) ? $instructor['name'] : ''; ?>" required>
+        <br><br>
+        <label for="phone_no">Phone Number:</label>
+        <input type="text" name="phone_no" placeholder="Enter Contact Number" value="<?php echo isset($instructor['phone_no']) ? $instructor['phone_no'] : ''; ?>" required>
+        <br><br>
+        <label for="email">Email:</label>
+        <input type="email" name="email" placeholder="Enter Email" value="<?php echo isset($instructor['email']) ? $instructor['email'] : ''; ?>" required>
+        <br><br>
+        <label for="instructor_room">Instructor Room:</label>
+        <input type="text" name="instructor_room" placeholder="Enter Room Number" value="<?php echo isset($instructor['instructor_room']) ? $instructor['instructor_room'] : ''; ?>" required>
+        <br><br>
+        <button type="submit"><?php echo isset($_GET['edit']) ? "Update" : "Add"; ?> Instructor</button>
+    </fieldset>
+</form>
+</div>
+
+<?php
 // Fetch Instructor Data
 $sql = "SELECT * FROM instructors";
 $result = $conn->query($sql);
@@ -70,7 +95,7 @@ if (isset($_GET['delete'])) {
 
 <br><hr>
 
-<h4>List</h4>
+<h4>Instructor List</h4>
 
 <table border="1">
     <tr>
@@ -100,7 +125,7 @@ if (isset($_GET['delete'])) {
             ";
         }
     } else {
-        echo "<tr><td colspan='6'>No Instructor found</td></tr>";
+        echo "<tr><td colspan='6'>No instructors found</td></tr>";
     }
     ?>
 </table>
