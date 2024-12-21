@@ -1,6 +1,16 @@
 <?php
-    include '../includes/db_connect.php';
+include '../includes/db_connect.php';
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles.css"> <!-- Link to the updated CSS -->
+    <title>Manage Advisers</title>
+</head>
+<body>
 
 <h3>Manage Advisers</h3>
 
@@ -34,44 +44,40 @@
 
 <?php
 // Add Adviser Logic
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $fullName = $_POST['fullName'];
-        $position = $_POST['position'];
-        $deptName = $_POST['deptName'];
-        $internal_phone_no = $_POST['internal_phone_no'];
-        $email = $_POST['email'];
-        $roomNum = $_POST['roomNum'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fullName = $_POST['fullName'];
+    $position = $_POST['position'];
+    $deptName = $_POST['deptName'];
+    $internal_phone_no = $_POST['internal_phone_no'];
+    $email = $_POST['email'];
+    $roomNum = $_POST['roomNum'];
 
-        $sql = "INSERT INTO advisers (full_name, position, department_name,
-        internal_phone_no, email, room_number) VALUES ('$fullName', '$position',
-        '$deptName', '$internal_phone_no', '$email', '$roomNum')";
+    $sql = "INSERT INTO advisers (full_name, position, department_name,
+    internal_phone_no, email, room_number) VALUES ('$fullName', '$position',
+    '$deptName', '$internal_phone_no', '$email', '$roomNum')";
 
-        if ($conn->query($sql) === TRUE) {
-            //echo "Adviser added successfully!";
-            header("Location: staffs.php?type=advsr");
-            //exit();
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+    if ($conn->query($sql) === TRUE) {
+        header("Location: staffs.php?type=advsr");
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
+}
 
 // Fetch Adviser Data
-    $sql = "SELECT * FROM advisers";
-    $result = $conn->query($sql);   
-    
-// Delete Adviser Logic
-    if (isset($_GET['delete'])) {
-        $adviser_id = $_GET['delete'];
-        $sql = "DELETE FROM advisers WHERE adviser_id = $adviser_id";
+$sql = "SELECT * FROM advisers";
+$result = $conn->query($sql);   
 
-        if ($conn->query($sql) === TRUE) {
-            //echo "Adviser deleted successfully!";
-            header("Location: staffs.php?type=advsr");
-            //exit();
-        } else {
-            echo "Error deleting record" . $conn->error;
-        }
+// Delete Adviser Logic
+if (isset($_GET['delete'])) {
+    $adviser_id = $_GET['delete'];
+    $sql = "DELETE FROM advisers WHERE adviser_id = $adviser_id";
+
+    if ($conn->query($sql) === TRUE) {
+        header("Location: staffs.php?type=advsr");
+    } else {
+        echo "Error deleting record" . $conn->error;
     }
+}
 ?>
 
 <br><hr>
@@ -91,26 +97,30 @@
     </tr>
 
     <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()){
-                echo "
-                    <tr>
-                        <td>" . $row['adviser_id'] . "</td>
-                        <td>" . $row['full_name'] . "</td>
-                        <td>" . $row['position'] . "</td>
-                        <td>" . $row['department_name'] . "</td>
-                        <td>" . $row['internal_phone_no'] . "</td>
-                        <td>" . $row['email'] . "</td>
-                        <td>" . $row['room_number'] . "</td>
-                        <td>
-                            <a href='?type=advsr&edit=" . $row['adviser_id'] . "'>Edit</a>
-                            <a href='?type=advsr&delete=" . $row['adviser_id'] . "'>Delete</a>
-                        </td>
-                    </tr>
-                ";
-            }
-        } else {
-            echo "<tr><td colspan='8'>No advisers found</td></tr>";
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()){
+            echo "
+                <tr>
+                    <td>" . $row['adviser_id'] . "</td>
+                    <td>" . $row['full_name'] . "</td>
+                    <td>" . $row['position'] . "</td>
+                    <td>" . $row['department_name'] . "</td>
+                    <td>" . $row['internal_phone_no'] . "</td>
+                    <td>" . $row['email'] . "</td>
+                    <td>" . $row['room_number'] . "</td>
+                    <td>
+                        <a href='?type=advsr&edit=" . $row['adviser_id'] . "'>Edit</a>
+                        <a href='?type=advsr&delete=" . $row['adviser_id'] . "'>Delete</a>
+                    </td>
+                </tr>
+            ";
         }
+    } else {
+        echo "<tr><td colspan='8'>No advisers found</td></tr>";
+    }
     ?>
 </table>
+
+<?php include '../includes/footer.php'; ?>
+</body>
+</html>

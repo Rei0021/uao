@@ -8,58 +8,7 @@
     <title>University Accommodation Management System</title>
 </head>
 
-<style>
-    body {
-        margin: 1px;
-    }
-
-    h3 {
-        margin: 0;
-        padding: 10px 20px;
-        color: white; 
-        font-weight: bold;
-    }
-
-    header {
-        display: flex;
-        justify-content: space-between; 
-        background-color: #f1485b; 
-        color: white;
-        padding: 10px 20px;
-    }
-
-    .header-title {
-        flex: 1; 
-        text-align: left;
-        font-size: 24px;
-    }
-
-    .Navbar {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-        padding: 0;
-        margin: 0;
-    }
-
-    .Navbar li {
-        display: inline-block;
-        font-family: Tahoma, sans-serif;
-    }
-
-    .Navbar li a {
-        text-decoration: none;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    .Navbar li a:hover {
-        background-color: white;
-        color: #f1485b;
-    }
-</style>
+<link rel="stylesheet" href="/uao/assets/styles.css">
 
 
 <body>

@@ -1,122 +1,6 @@
-<style>
-    table {
-        width: 80%;
-        margin: 20px auto;
-        border-collapse: collapse;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    th, td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
-
-    th {
-        background-color: #f1485b;
-        color: white;
-    }
-
-    tr:hover {
-        background-color: #f1f1f1;
-    }
-
-    .form-container {
-        width: 100%;
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-        text-align: center;
-    }
-
-    h3 {
-        margin-bottom: 20px;
-        color: #333;
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    form fieldset {
-        border: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    form legend {
-        font-size: 18px;
-        margin-bottom: 10px;
-        font-weight: bold;
-        color: #555;
-        text-align: left;
-    }
-
-    form label {
-        display: block;
-        margin-bottom: 5px;
-        color: #555;
-        text-align: left;
-    }
-
-    form input[type="text"],
-    form input[type="email"],
-    form input[type="date"],
-    form select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
-
-    form button {
-        width: 100%;
-        padding: 10px;
-        background-color: #f1485b;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    form button:hover {
-        color: #f1485b;
-        background-color: white;
-      
-    }
-
-    nav {
-        margin-top: 20px;
-    }
-
-    nav a {
-        text-decoration: none;
-        color: #007bff;
-        font-size: 14px;
-        margin: 0 5px;
-        
-    }
-
-    nav a:hover {
-        color: #f1485b;
-    }
-
-    .title-cont1, .title-cont2 {
-        text-align: center;
-    }
-</style>
-
-
 <?php
-    include '../includes/db_connect.php';
-    include '../includes/header.php';
+include '../includes/db_connect.php';
+include '../includes/header.php';
 ?>
 
 <h2 class="title-cont1">Manage Students</h2>
@@ -191,7 +75,6 @@
     </fieldset>
 </form>   
 </div>
-
 
 <?php
 // Add Student Logic
@@ -288,49 +171,5 @@
         }
     ?>
 </table>
-
-<?php
-    // NOT WORKING!!!
-    /* Edit Student Logic
-    if (isset($_GET['edit'])) {
-        $bannerNum = $_GET['edit'];
-
-        // Fetch the course data to populate the form for editing
-        $sql = "SELECT s.banner_number, s.first_name, s.last_name, s.category,
-                s.special_needs, s.additional_comments, s.current_status, s.major, s.minor,
-                a.full_name AS adviser_id, c.department_name AS course_number
-                FROM ((students s
-                JOIN advisers a ON s.adviser_id = a.adviser_id)
-                JOIN courses c ON s.course_number = c.course_number)
-                WHERE s.banner_number = '$bannerNum'";
-        $result = $conn->query($sql);
-        $banner = $result->fetch_assoc();
-    }
-
-    // Update Student Logic
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST[''])) {
-        $fname = $_POST['firstName'];
-        $lname = $_POST['lastName'];
-        $category = $_POST['category'];
-        $specialNeeds = $_POST['specialNeeds'];
-        $addComments = $_POST['comments'];
-        $currentStat = $_POST['status'];
-        $major = $_POST['major'];
-        $minor = $_POST['minor'];
-        $adviser_id = $_POST['adviser_id'];
-        $courseNum = $_POST['course_number'];
-
-        $sql = "UPDATE students SET first_name = '$fname', last_name = '$lname', category = '$category',
-                special_needs = $specialNeeds, additional_comments = $addComments, current_status
-                = '$currentStat', major = '$major', minor = '$minor', adviser_id = '$adviser_id',
-                course_number = $courseNum WHERE banner_number = '$bannerNum'";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "Student updated successfully.";
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-    }*/
-?>
 
 <?php include '../includes/footer.php'; ?>

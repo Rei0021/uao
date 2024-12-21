@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Invoices</title>
+    <link rel="stylesheet" href="assets/styles.css"> <!-- Link to the updated CSS -->
+</head>
+<body>
+
 <h3>Manage Invoices</h3>
 
 <h4>Invoice Form</h4>
@@ -39,53 +49,51 @@
 
 <?php
 // Add Invoice Logic
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $leaseNum = $_POST['leaseNum'];
-        $sem = $_POST['semester'];
-        $payDue = $_POST['paymentDue'];
-        $bannerNum = $_POST['bannerNum'];
-        $placeNum = $_POST['placeNum'];
-        $payDate = $_POST['paymentDate'];
-        $payMethod = $_POST['paymentMethod'];
-        $first_date_reminder = $_POST['firstDateReminder'];
-        $second_date_reminder = $_POST['secondDateReminder'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $leaseNum = $_POST['leaseNum'];
+    $sem = $_POST['semester'];
+    $payDue = $_POST['paymentDue'];
+    $bannerNum = $_POST['bannerNum'];
+    $placeNum = $_POST['placeNum'];
+    $payDate = $_POST['paymentDate'];
+    $payMethod = $_POST['paymentMethod'];
+    $first_date_reminder = $_POST['firstDateReminder'];
+    $second_date_reminder = $_POST['secondDateReminder'];
 
-        $sql = "INSERT INTO invoices (lease_number, semester, payment_due,
-                banner_number, place_number, payment_date, payment_method,
-                first_date_reminder, second_date_reminder) VALUES ('$leaseNum',
-                '$sem', '$payDue', '$bannerNum', '$placeNum', '$payDate', '$payMethod',
-                '$first_date_reminder', '$second_date_reminder')";
+    $sql = "INSERT INTO invoices (lease_number, semester, payment_due,
+            banner_number, place_number, payment_date, payment_method,
+            first_date_reminder, second_date_reminder) VALUES ('$leaseNum',
+            '$sem', '$payDue', '$bannerNum', '$placeNum', '$payDate', '$payMethod',
+            '$first_date_reminder', '$second_date_reminder')";
 
-        if ($conn->query($sql) === TRUE) {
-            //echo "Invoice added successfully.";
-            header("Location: transaction.php?type=invoice");
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+    if ($conn->query($sql) === TRUE) {
+        header("Location: transaction.php?type=invoice");
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
+}
 
 // Fetch Invoice Data
-    $sql = "SELECT i.invoice_number, l.lease_number AS leaseNum, i.semester,
-    i.payment_due, s.last_name AS lname, s.first_name AS fname, s.banner_number AS bannerNum,
-    r.place_number AS placeNum, r.room_number AS roomNum, r.room_type AS rType, i.payment_date,
-    i.payment_method, i.first_date_reminder, i.second_date_reminder
-    FROM (((invoices i JOIN leases l ON i.lease_number = l.lease_number)
-    JOIN students s ON i.banner_number = s.banner_number)
-    JOIN rooms r ON i.place_number = r.place_number)";
-    $result = $conn->query($sql);
+$sql = "SELECT i.invoice_number, l.lease_number AS leaseNum, i.semester,
+i.payment_due, s.last_name AS lname, s.first_name AS fname, s.banner_number AS bannerNum,
+r.place_number AS placeNum, r.room_number AS roomNum, r.room_type AS rType, i.payment_date,
+i.payment_method, i.first_date_reminder, i.second_date_reminder
+FROM (((invoices i JOIN leases l ON i.lease_number = l.lease_number)
+JOIN students s ON i.banner_number = s.banner_number)
+JOIN rooms r ON i.place_number = r.place_number)";
+$result = $conn->query($sql);
 
 // Delete Invoice Logic
-    if (isset($_GET['delete'])) {
-        $invoiceNum = $_GET['delete'];
-        $sql = "DELETE FROM invoices WHERE invoice_number = '$invoiceNum'";
+if (isset($_GET['delete'])) {
+    $invoiceNum = $_GET['delete'];
+    $sql = "DELETE FROM invoices WHERE invoice_number = '$invoiceNum'";
 
-        if ($conn->query($sql) === TRUE) {
-            //echo "Lease deleted successfully";
-            header("Location: transaction.php?type=invoice");
-        } else {
-            echo "Error deleting record" . $conn->error;
-        }
+    if ($conn->query($sql) === TRUE) {
+        header("Location: transaction.php?type=invoice");
+    } else {
+        echo "Error deleting record" . $conn->error;
     }
+}
 ?>
 
 <br><hr>
@@ -111,31 +119,33 @@
     </tr>
 
     <?php
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                        <td>" . $row['invoice_number'] . "</td>
-                        <td>" . $row['leaseNum'] . "</td>
-                        <td>" . $row['semester'] . "</td>
-                        <td>" . $row['payment_due'] . "</td>
-                        <td>" . $row['lname'] . "</td>
-                        <td>" . $row['fname'] . "</td>
-                        <td>" . $row['bannerNum'] . "</td>
-                        <td>" . $row['placeNum'] . "</td>
-                        <td>" . $row['roomNum'] . "</td>
-                        <td>" . $row['rType'] . "</td>
-                        <td>" . $row['payment_date'] . "</td>
-                        <td>" . $row['payment_method'] . "</td>
-                        <td>" . $row['first_date_reminder'] . "</td>
-                        <td>" . $row['second_date_reminder'] . "</td>
-                        <td>
-                            <a href='?type=invoice&edit=" . $row['invoice_number'] . "'>Edit</a>
-                            <a href='?type=invoice&delete=" . $row['invoice_number'] . "'>Delete</a>
-                        </td>
-                    </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='15'>No invoices found</td></tr>";
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>
+                    <td>" . $row['invoice_number'] . "</td>
+                    <td>" . $row['leaseNum'] . "</td>
+                    <td>" . $row['semester'] . "</td>
+                    <td>" . $row['payment_due'] . "</td>
+                    <td>" . $row['lname'] . "</td>
+                    <td>" . $row['fname'] . "</td>
+                    <td>" . $row['bannerNum'] . "</td>
+                    <td>" . $row['placeNum'] . "</td>
+                    <td>" . $row['roomNum'] . "</td>
+                    <td>" . $row['rType'] . "</td>
+                    <td>" . $row['payment_date'] . "</td>
+                    <td>" . $row['payment_method'] . "</td>
+                    <td>" . $row['first_date_reminder'] . "</td>
+                    <td>" . $row['second_date_reminder'] . "</td>
+                    <td>
+                        <a href='?type=invoice&edit=" . $row['invoice_number'] . "'>Edit</a>
+                        <a href='?type=invoice&delete=" . $row['invoice_number'] . "'>Delete</a>
+                    </td>
+                </tr>";
         }
+    } else {
+        echo "<tr><td colspan='15'>No invoices found</td></tr>";
+    }
     ?>
 </table>
+</body>
+</html>

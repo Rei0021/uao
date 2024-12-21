@@ -1,6 +1,6 @@
 <?php
-    include '../includes/db_connect.php';
-    include '../includes/header.php';
+include '../includes/db_connect.php';
+include '../includes/header.php';
 ?>
 
 <h2>Manage Inspection</h2>
@@ -34,25 +34,23 @@
 
 <?php
 // Add Inspection Logic
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $staff_id = $_POST['staff'];
-        $flat_id = $_POST['flat'];
-        $date = $_POST['inspectDate'];
-        $satisfactor = $_POST['satisfaction'];
-        $addComment = $_POST['comments'];
-        
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $staff_id = $_POST['staff'];
+    $flat_id = $_POST['flat'];
+    $date = $_POST['inspectDate'];
+    $satisfactor = $_POST['satisfaction'];
+    $addComment = $_POST['comments'];
 
-        $sql = "INSERT INTO inspections (staff_id, flat_id, inspection_date,
-                satisfactory_condition, comments) VALUES ('$staff_id', '$flat_id', '$date',
-                '$satisfactor', '$addComment')";
+    $sql = "INSERT INTO inspections (staff_id, flat_id, inspection_date,
+            satisfactory_condition, comments) VALUES ('$staff_id', '$flat_id', '$date',
+            '$satisfactor', '$addComment')";
 
-        if ($conn->query($sql) === TRUE) {
-            //echo "Inspection added successfully.";
-            header("Location: accommodation.php?type=flat");
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
+    if ($conn->query($sql) === TRUE) {
+        header("Location: accommodation.php?type=flat");
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
     }
+}
 ?>
 
 <?php include '../includes/footer.php'; ?>
