@@ -1,19 +1,28 @@
 <h3>Manage Leases</h3>
 
+<h4>Lease Form</h4>
+
 <!-- Add Lease Form -->
 <form action="" method="post">
-    <h4>Add Lease</h4>
-    <input type="text" name="leaseDuration" placeholder="Lease Duration" required>
-    <br><br>
-    <input type="text" name="bannerNum" placeholder="Banner Number" required>
-    <br><br>
-    <input type="text" name="placeNumber" placeholder="Place Number" required>
-    <br><br>
-    <input type="date" name="startDate" placeholder="Start Date">
-    <br><br>
-    <input type="date" name="endDate" placeholder="End Date">
-    <br><br>
-    <button type="submit">Add Lease</button>
+    <fieldset>
+        <legend>Add Lease</legend>
+        <label for="leaseDuration">Lease Duration:</label>
+        <input type="text" name="leaseDuration" placeholder="(Whole Year, First/Second Semester)" required>
+        <br><br>
+        <label for="bannerNum">Banner Number:</label>
+        <input type="text" name="bannerNum" placeholder="Enter Banner Number" required>
+        <br><br>
+        <label for="placeNumber">Place Number:</label>
+        <input type="text" name="placeNumber" placeholder="Enter Place Number" required>
+        <br><br>
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" placeholder="Start Date">
+        <br><br>
+        <label for="endDate">End Date:</label>
+        <input type="date" name="endDate" placeholder="End Date">
+        <br><br>
+        <button type="submit">Add Lease</button>
+    </fieldset>
 </form>
 
 <?php
@@ -30,7 +39,7 @@
                 '$startDate', '$endDate')";
         
         if ($conn->query($sql) === TRUE) {
-            echo "Lease added successfully.";
+            //echo "Lease added successfully.";
             header("Location: transaction.php?type=lease");
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
@@ -40,7 +49,7 @@
 // Fetch Lease Data
     $sql = "SELECT l.lease_number, l.lease_duration, s.banner_number AS student_id,
             s.first_name AS fname, s.last_name AS lname, r.place_number AS placeNum, 
-            r.room_number AS roomNum, l.start_date, l.end_date FROM ((leases l 
+            r.room_number AS roomNum, r.room_type AS rType, l.start_date, l.end_date FROM ((leases l 
             JOIN students s ON l.banner_number = s.banner_number)
             JOIN rooms r ON l.place_number = r.place_number)";
     $result = $conn->query($sql);
@@ -51,7 +60,7 @@
         $sql = "DELETE FROM leases WHERE lease_number = '$leaseNum'";
 
         if ($conn->query($sql) === TRUE) {
-            echo "Lease deleted successfully";
+            //echo "Lease deleted successfully";
             header("Location: transaction.php?type=lease");
         } else {
             echo "Error deleting record" . $conn->error;
@@ -71,6 +80,7 @@
         <th>Last Name</th>
         <th>Place Number</th>
         <th>Room Number</th>
+        <th>Room Type</th>
         <th>Start Date</th>
         <th>End Date</th>
         <th>Actions</th>
@@ -87,6 +97,7 @@
                         <td>" . $row['lname'] . "</td>
                         <td>" . $row['placeNum'] . "</td>
                         <td>" . $row['roomNum'] . "</td>
+                        <td>" . $row['rType'] . "</td>
                         <td>" . $row['start_date'] . "</td>
                         <td>" . $row['end_date'] . "</td>
                         <td>
@@ -96,7 +107,7 @@
                     </tr>";
             }
         } else {
-            echo "<tr><td colspan='7'>No leases found</td></tr>";
+            echo "<tr><td colspan='8'>No leases found</td></tr>";
         }
     ?>
 </table>

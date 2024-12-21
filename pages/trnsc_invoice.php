@@ -1,27 +1,40 @@
 <h3>Manage Invoices</h3>
 
+<h4>Invoice Form</h4>
+
 <!-- Add Invoice Form -->
 <form action="" method="post">
-    <h4>Add Invoice</h4>
-    <input type="text" name="leaseNum" placeholder="Lease Number" required>
-    <br><br>
-    <input type="text" name="semester" placeholder="Semester" required>
-    <br><br>
-    <input type="text" name="paymentDue" placeholder="Payment Due" required>
-    <br><br>
-    <input type="text" name="bannerNum" placeholder="Banner Number" required>
-    <br><br>
-    <input type="text" name="placeNum" placeholder="Place Number" required>
-    <br><br>
-    <input type="date" name="paymentDate" placeholder="Payment Date">
-    <br><br>
-    <input type="text" name="paymentMethod" placeholder="Payment Method" required>
-    <br><br>
-    <input type="date" name="firstDateReminder" placeholder="1st Reminder">
-    <br><br>
-    <input type="date" name="secondDateReminder" placeholder="2nd Reminder">
-    <br><br>
-    <button type="submit">Add Invoice</button>
+    <fieldset>
+        <legend>Add Invoice</legend>
+        <label for="leaseNum">Lease Number:</label>
+        <input type="text" name="leaseNum" placeholder="Enter Lease ID" required>
+        <br><br>
+        <label for="semester">Semester:</label>
+        <input type="text" name="semester" placeholder="Enter Semester" required>
+        <br><br>
+        <label for="paymentDue">Payment Due:</label>
+        <input type="text" name="paymentDue" placeholder="Enter Due Amount" required>
+        <br><br>
+        <label for="bannerNum">Banner Number:</label>
+        <input type="text" name="bannerNum" placeholder="Enter Banner Number" required>
+        <br><br>
+        <label for="placeNum">Place Number:</label>
+        <input type="text" name="placeNum" placeholder="Enter Place Number" required>
+        <br><br>
+        <label for="paymentDate">Payment Date:</label>
+        <input type="date" name="paymentDate" placeholder="Payment Date">
+        <br><br>
+        <label for="paymentMethod">Payment Method:</label>
+        <input type="text" name="paymentMethod" placeholder="(Check, Cash, Visa, Other)" required>
+        <br><br>
+        <label for="firstDateReminder">1st Reminder:</label>
+        <input type="date" name="firstDateReminder" placeholder="1st Reminder">
+        <br><br>
+        <label for="secondDateReminder">2nd Reminder:</label>
+        <input type="date" name="secondDateReminder" placeholder="2nd Reminder">
+        <br><br>
+        <button type="submit">Add Invoice</button>
+    </fieldset>
 </form>
 
 <?php
@@ -44,7 +57,8 @@
                 '$first_date_reminder', '$second_date_reminder')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "Invoice added successfully.";
+            //echo "Invoice added successfully.";
+            header("Location: transaction.php?type=invoice");
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -53,12 +67,25 @@
 // Fetch Invoice Data
     $sql = "SELECT i.invoice_number, l.lease_number AS leaseNum, i.semester,
     i.payment_due, s.last_name AS lname, s.first_name AS fname, s.banner_number AS bannerNum,
-    r.place_number AS placeNum, r.room_number AS roomNum, i.payment_date,
+    r.place_number AS placeNum, r.room_number AS roomNum, r.room_type AS rType, i.payment_date,
     i.payment_method, i.first_date_reminder, i.second_date_reminder
     FROM (((invoices i JOIN leases l ON i.lease_number = l.lease_number)
     JOIN students s ON i.banner_number = s.banner_number)
     JOIN rooms r ON i.place_number = r.place_number)";
     $result = $conn->query($sql);
+
+// Delete Invoice Logic
+    if (isset($_GET['delete'])) {
+        $invoiceNum = $_GET['delete'];
+        $sql = "DELETE FROM invoices WHERE invoice_number = '$invoiceNum'";
+
+        if ($conn->query($sql) === TRUE) {
+            //echo "Lease deleted successfully";
+            header("Location: transaction.php?type=invoice");
+        } else {
+            echo "Error deleting record" . $conn->error;
+        }
+    }
 ?>
 
 <br><hr>
@@ -75,6 +102,7 @@
         <th>Banner Number</th>
         <th>Place Number</th>
         <th>Room Number</th>
+        <th>Room Type</th>
         <th>Payment Date</th>
         <th>Payment Method</th>
         <th>First Date Reminder</th>
@@ -95,6 +123,7 @@
                         <td>" . $row['bannerNum'] . "</td>
                         <td>" . $row['placeNum'] . "</td>
                         <td>" . $row['roomNum'] . "</td>
+                        <td>" . $row['rType'] . "</td>
                         <td>" . $row['payment_date'] . "</td>
                         <td>" . $row['payment_method'] . "</td>
                         <td>" . $row['first_date_reminder'] . "</td>
@@ -106,7 +135,7 @@
                     </tr>";
             }
         } else {
-            echo "<tr><td colspan='14'>No invoices found</td></tr>";
+            echo "<tr><td colspan='15'>No invoices found</td></tr>";
         }
     ?>
 </table>

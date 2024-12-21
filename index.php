@@ -83,7 +83,7 @@ if (!isset($_SESSION['user_id'])) {
     <li><a href="pages/list_staffs.php">Staffs</a></li>
     <li><a href="pages/list_halls.php">Halls of Residence</a></li>
     <li><a href="pages/list_flats.php">Student Flats</a></li>
-    <li><a href="pages/avail_rooms.php">Availabe Rooms</a></li>
+    <li><a href="pages/avail_rooms.php">Available Rooms</a></li>
     <li><a href="pages/list_rooms.php">Room Assignments</a></li>
     <li><a href="pages/list_ls_invc.php">Lease and Invoice</a></li>
 </ul>

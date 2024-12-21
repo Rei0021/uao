@@ -3,11 +3,50 @@
     include '../includes/header.php';
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <style>
+    h2{ 
+        text-align: center;
+    }
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #34495e;
+        color: white;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    </style>
+    
+</body>
+</html>
+
+
 <?php
 // Fetch Lease Data
     $sql_ls = "SELECT l.lease_number, l.lease_duration, s.banner_number AS student_id,
     s.first_name AS fname, s.last_name AS lname, r.place_number AS placeNum, 
-    r.room_number AS roomNum, l.start_date, l.end_date FROM ((leases l 
+    r.room_number AS roomNum, r.room_type AS rType, l.start_date, l.end_date FROM ((leases l 
     JOIN students s ON l.banner_number = s.banner_number)
     JOIN rooms r ON l.place_number = r.place_number)";
     $result_ls = $conn->query($sql_ls);
@@ -15,7 +54,7 @@
 // Fetch Invoice Data
     $sql_invc = "SELECT i.invoice_number, l.lease_number AS leaseNum, i.semester,
     i.payment_due, s.last_name AS lname, s.first_name AS fname, s.banner_number AS bannerNum,
-    r.place_number AS placeNum, r.room_number AS roomNum, i.payment_date,
+    r.place_number AS placeNum, r.room_number AS roomNum, r.room_type AS rType, i.payment_date,
     i.payment_method, i.first_date_reminder, i.second_date_reminder
     FROM (((invoices i JOIN leases l ON i.lease_number = l.lease_number)
     JOIN students s ON i.banner_number = s.banner_number)
@@ -34,6 +73,7 @@
         <th>Last Name</th>
         <th>Place Number</th>
         <th>Room Number</th>
+        <th>Room Type</th>
         <th>Start Date</th>
         <th>End Date</th>
     </tr>
@@ -49,6 +89,7 @@
                         <td>" . $row['lname'] . "</td>
                         <td>" . $row['placeNum'] . "</td>
                         <td>" . $row['roomNum'] . "</td>
+                        <td>" . $row['rType'] . "</td>
                         <td>" . $row['start_date'] . "</td>
                         <td>" . $row['end_date'] . "</td>
                     </tr>";
@@ -74,6 +115,7 @@
         <th>Banner Number</th>
         <th>Place Number</th>
         <th>Room Number</th>
+        <th>Room Type</th>
         <th>Payment Date</th>
         <th>Payment Method</th>
         <th>First Date Reminder</th>
@@ -93,6 +135,7 @@
                         <td>" . $row['bannerNum'] . "</td>
                         <td>" . $row['placeNum'] . "</td>
                         <td>" . $row['roomNum'] . "</td>
+                        <td>" . $row['rType'] . "</td>
                         <td>" . $row['payment_date'] . "</td>
                         <td>" . $row['payment_method'] . "</td>
                         <td>" . $row['first_date_reminder'] . "</td>
