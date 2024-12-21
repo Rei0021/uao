@@ -199,21 +199,21 @@ include '../includes/header.php';
 
 <?php
 // Determine which report to display
+// Determine which report to display
 $report = $_GET['report'] ?? 'waiting_list';
 
 if ($report === 'waiting_list') {
     echo "<div class='report-section'>";
     echo "<h3>Students on Waiting List</h3>";
-    $result = $conn->query("SELECT banner_number, first_name, last_name, email, current_status 
+    $result = $conn->query("SELECT banner_number, first_name, last_name, current_status 
                             FROM students WHERE current_status = 'Waiting'");
     if ($result->num_rows > 0) {
         echo "<table>
-                <tr><th>Banner Number</th><th>Name</th><th>Email</th><th>Status</th></tr>";
+                <tr><th>Banner Number</th><th>Name</th><th>Status</th></tr>";
         while ($row = $result->fetch_assoc()) {
             echo "<tr>
                     <td>{$row['banner_number']}</td>
                     <td>{$row['first_name']} {$row['last_name']}</td>
-                    <td>{$row['email']}</td>
                     <td>{$row['current_status']}</td>
                   </tr>";
         }
@@ -225,47 +225,58 @@ if ($report === 'waiting_list') {
 }
 
 
+
 if ($report === 'available_rooms') {
     echo "<div class='report-section'>";
     echo "<h3>Available Rooms</h3>";
-    $hall_rooms = $conn->query("SELECT hall_rooms.room_number, halls_of_residence.name AS hall_name 
-                                FROM hall_rooms 
-                                JOIN halls_of_residence ON hall_rooms.hall_id = halls_of_residence.hall_id 
-                                WHERE hall_rooms.room_id NOT IN (SELECT room_id FROM leases)");
-    $flat_rooms = $conn->query("SELECT flat_rooms.room_number, student_flats.apartment_number 
-                                FROM flat_rooms 
-                                JOIN student_flats ON flat_rooms.flat_id = student_flats.flat_id 
-                                WHERE flat_rooms.room_id NOT IN (SELECT room_id FROM leases)");
-    
-    echo "<h4>Halls</h4>";
-    if ($hall_rooms->num_rows > 0) {
-        echo "<table>
-                <tr><th>Room Number</th><th>Hall Name</th></tr>";
+
+    // Query for hall rooms
+    $hall_rooms = $conn->query("
+        SELECT rooms.room_number, halls_of_residence.name AS hall_name
+        FROM rooms
+        JOIN halls_of_residence ON rooms.hall_id = halls_of_residence.hall_id
+        WHERE rooms.room_type = 'Hall'
+          AND rooms.place_number NOT IN (SELECT place_number FROM leases)
+    ");
+
+    // Query for flat rooms
+    $flat_rooms = $conn->query("
+        SELECT rooms.room_number, student_flats.apartment_number AS flat_name
+        FROM rooms
+        JOIN student_flats ON rooms.flat_id = student_flats.flat_id
+        WHERE rooms.room_type = 'Flat'
+          AND rooms.place_number NOT IN (SELECT place_number FROM leases)
+    ");
+
+    echo "<table border='1' style='width:100%; border-collapse:collapse;'>";
+    echo "<thead>";
+    echo "<tr><th>Room Number</th><th>Location</th></tr>";
+    echo "</thead>";
+    echo "<tbody>";
+
+    // Hall rooms
+    if ($hall_rooms && $hall_rooms->num_rows > 0) {
         while ($row = $hall_rooms->fetch_assoc()) {
-            echo "<tr>
-                    <td>Room {$row['room_number']}</td>
-                    <td>{$row['hall_name']}</td>
-                  </tr>";
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['room_number']) . "</td>";
+            echo "<td>Hall: " . htmlspecialchars($row['hall_name']) . "</td>";
+            echo "</tr>";
         }
-        echo "</table>";
-    } else {
-        echo "<p>No available rooms in halls.</p>";
     }
 
-    echo "<h4>Flats</h4>";
-    if ($flat_rooms->num_rows > 0) {
-        echo "<table>
-                <tr><th>Room Number</th><th>Apartment Number</th></tr>";
+    // Flat rooms
+    if ($flat_rooms && $flat_rooms->num_rows > 0) {
         while ($row = $flat_rooms->fetch_assoc()) {
-            echo "<tr>
-                    <td>Room {$row['room_number']}</td>
-                    <td>{$row['apartment_number']}</td>
-                  </tr>";
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['room_number']) . "</td>";
+            echo "<td>Flat: " . htmlspecialchars($row['flat_name']) . "</td>";
+            echo "</tr>";
         }
-        echo "</table>";
-    } else {
-        echo "<p>No available rooms in flats.</p>";
     }
+
+    echo "</tbody>";
+    echo "</table>";
+
     echo "</div>";
 }
 
@@ -273,16 +284,16 @@ if ($report === 'unpaid_invoices') {
     echo "<div class='report-section'>";
     echo "<h3>Unpaid Invoices</h3>";
     $sql = "SELECT invoices.invoice_number, students.first_name, students.last_name, invoices.payment_due
-            FROM invoices
-            JOIN students ON invoices.student_id = students.student_id
-            WHERE invoices.payment_date IS NULL";
+    FROM invoices
+    JOIN students ON invoices.banner_number = students.banner_number
+    WHERE invoices.payment_date IS NULL";
+
+
 
     $result = $conn->query($sql);
-
     if (!$result) {
-        die("Query failed: " . $conn->error);
+        die("Query failed: " . $conn->error); // Improved error reporting
     }
-
     if ($result->num_rows > 0) {
         echo "<table>
                 <tr><th>Invoice Number</th><th>Student Name</th><th>Amount Due</th></tr>";
@@ -305,37 +316,42 @@ if ($report === 'rent_summary') {
     echo "<h3>Rent Summary</h3>";
 
     // Halls Section
-    echo "<h4>Halls</h4>";
-    echo "<table>
-            <tr>
-                <th>Place Number</th>
-                <th>Room Number</th>
-                <th>Monthly Rent</th>
-                <th>Room Type</th>
-                <th>Hall Name</th>
-            </tr>";
+echo "<h4>Halls</h4>";
+echo "<table>
+        <tr>
+            <th>Place Number</th>
+            <th>Room Number</th>
+            <th>Monthly Rent</th>
+            <th>Room Type</th>
+            <th>Hall Name</th>
+        </tr>";
 
-    $sql = "SELECT r.place_number, r.room_number, r.monthly_rent,
-                r.room_type, hr.name AS hall_id
-            FROM rooms r
-            JOIN halls_of_residence hr ON r.hall_id = hr.hall_id
-            WHERE r.room_type = 'Hall'";
-    $result = $conn->query($sql);
+$sql = "SELECT r.place_number, r.room_number, r.monthly_rent, r.room_type, r.hall_id, hr.name AS hall_name
+        FROM rooms r
+        JOIN halls_of_residence hr ON r.hall_id = hr.hall_id
+        WHERE r.room_type = 'Hall'";
 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()){
-            echo "<tr>
-                    <td>{$row['place_number']}</td>
-                    <td>{$row['room_number']}</td>
-                    <td>{$row['monthly_rent']}</td>
-                    <td>{$row['room_type']}</td>
-                    <td>{$row['hall_id']}</td>
-                  </tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No rooms found</td></tr>";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Loop through the results and display them in the table
+    while ($row = $result->fetch_assoc()) {
+        echo "<tr>
+                <td>{$row['place_number']}</td>
+                <td>{$row['room_number']}</td>
+                <td>{$row['monthly_rent']}</td>
+                <td>{$row['room_type']}</td>
+                <td>{$row['hall_name']}</td> <!-- Hall name from halls_of_residence table -->
+              </tr>";
     }
-    echo "</table>";
+} else {
+    // If no rooms are found
+    echo "<tr><td colspan='5'>No halls found</td></tr>";
+}
+
+echo "</table>";
+
+    
 
     // Flats Section
     echo "<h4>Flats</h4>";
